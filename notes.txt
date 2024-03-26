@@ -1,0 +1,53 @@
+
+
+
+
+
+user
+socials
+
+
+user.update
+
+
+// update hook
+dbsocial.update({
+    where: {}
+    date: {}
+})
+
+// create hook
+dbsocial.create({
+    where: {}
+    date: {}
+})
+
+
+update&createJoin.map()
+onClick => setCreateHook
+
+submit
+
+
+---
+if image === File -> render via Url.createObj
+if image === string -> render via src
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
