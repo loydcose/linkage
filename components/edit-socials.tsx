@@ -10,11 +10,9 @@ type TEditSocials = {
 }
 
 export default function EditSocials({socials}: TEditSocials) {
-    const [socialFields, setSocialFields] = useState(socials)
+    const [socialFields, setSocialFields] = useState<Social[] | any[]>(socials)
     
-    // GOLO MAG ISIP KA KAYA MUNA PRE..
     const addSocialField = () => {
-        // @ts-ignore
         setSocialFields(prev => ([...prev, {
             id: new Date().getTime().toString(),
             socialMedia: "",
@@ -23,21 +21,48 @@ export default function EditSocials({socials}: TEditSocials) {
         }]))
     }
 
+    const handleInputChange = (index: number, field: string, value: string) => {
+        setSocialFields(prev => prev.map((item, i) => {
+            if (i === index) {
+                return {
+                    ...item,
+                    [field]: value
+                }
+            }
+            return item;
+        }))
+    }
+
     console.log({socialFields})
 
-
-  return (
-    <div className='space-y-3 py-10 border-b border-b-stone-300'>
-        {socialFields && socialFields.map((social, index) => (
-            <div className='mb-8' key={social.id}>
-                <div className='grid grid-cols-2 gap-2 mb-2'>
-                    <Input placeholder='Enter social media' value={social.socialMedia} onChange={e => socials[index].socialMedia = e.target.value}/>
-                    <Input placeholder='Enter display name' value={social.name} onChange={e => socials[index].name = e.target.value}/>
+    return (
+        <div className='py-10 border-b border-b-stone-300'>
+            <h2 className='font-bold mb-2'>Social medias</h2>
+            {socialFields && socialFields.map((social, index) => (
+                <div className='mb-8' key={social.id}>
+                    <div className='grid grid-cols-2 gap-2 mb-2'>
+                        <Input 
+                            placeholder='Enter social media' 
+                            value={socialFields[index].socialMedia} 
+                            onChange={e => handleInputChange(index, 'socialMedia', e.target.value)}
+                            required
+                        />
+                        <Input 
+                            placeholder='Enter display name' 
+                            value={socialFields[index].name} 
+                            onChange={e => handleInputChange(index, 'name', e.target.value)}
+                            required
+                        />
+                    </div>
+                    <Input 
+                        placeholder='Enter your link' 
+                        value={socialFields[index].link} 
+                        onChange={e => handleInputChange(index, 'link', e.target.value)}
+                        required
+                    />
                 </div>
-                <Input placeholder='Enter your link' value={social.link} onChange={e => socials[index].link = e.target.value}/>
-            </div>
-        ))}
-        <Button className='mt-6 w-full' onClick={addSocialField} variant={"secondary"} size={"sm"}>Add new</Button>
-    </div>
-)
+            ))}
+            <Button className='mt-6 w-full' onClick={addSocialField} variant={"secondary"} size={"sm"}>Add new</Button>
+        </div>
+    )
 }
