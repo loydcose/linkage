@@ -36,6 +36,7 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
     url: user.imageUrl,
   });
   const [hasProfileChanged, setHasProfileChanged] = useState(false);
+  const [hasSetToPublic, setHasSetToPublic] = useState(user.isActivated);
 
   const inputs = [
     {
@@ -74,12 +75,15 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
     const res = await updateUser({
       ...formData,
       imageUrl: hasProfileChanged ? imgUrl : user.imageUrl,
+      isActivated: hasSetToPublic,
     });
     if (res) {
       toast({
         title: "Profile information updated!",
       });
-      router.refresh();
+
+      // native reload to hard refresh
+      location.reload();
       console.log({ res });
     } else {
       toast({
@@ -109,13 +113,14 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
       name !== user.name ||
       username !== user.username ||
       (bio || null) !== user.bio ||
-      image?.url !== user.imageUrl
+      image?.url !== user.imageUrl ||
+      hasSetToPublic !== user.isActivated
     ) {
       setBtnDisabled(false);
     } else {
       setBtnDisabled(true);
     }
-  }, [name, username, bio, image?.url]);
+  }, [name, username, bio, image?.url, hasSetToPublic]);
 
   return (
     <form
@@ -138,7 +143,11 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
         />
       ))}
       <div className="flex items-center gap-2">
-        <Switch id="setActive" />
+        <Switch
+          id="setActive"
+          checked={hasSetToPublic}
+          onCheckedChange={setHasSetToPublic}
+        />
         <Label htmlFor="setActive">Set to public</Label>
       </div>
       <div className="py-6 flex gap-2 w-fit ml-auto">
