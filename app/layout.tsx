@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
-import { ClerkProvider } from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import TopNav from "@/components/top-nav";
+import { Toaster } from "@/components/ui/toaster";
 
 const font = Quicksand({ subsets: ["latin"] });
 
@@ -20,10 +21,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={font.className}>
-          <TopNav/>
-          <main className="w-[90%] mx-auto max-w-xl pb-8">
-            {children}
-          </main>
+          {/* Shadcnui's toaster */}
+          <Toaster />
+          <TopNav />
+          <main className="w-[90%] mx-auto max-w-xl pb-8">{children}</main>
         </body>
       </html>
     </ClerkProvider>
