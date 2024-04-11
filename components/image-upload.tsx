@@ -15,9 +15,15 @@ type TImageUpload = {
   image: Image;
   setImage: Dispatch<SetStateAction<Image>>;
   user: User;
+  setHasProfileChanged: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function ImageUpload({ image, setImage, user }: TImageUpload) {
+export default function ImageUpload({
+  image,
+  setImage,
+  user,
+  setHasProfileChanged,
+}: TImageUpload) {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const clickImageUpload = () => {
@@ -29,7 +35,7 @@ export default function ImageUpload({ image, setImage, user }: TImageUpload) {
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
+    setHasProfileChanged(true);
     setImage({ file: file, name: file.name, url: URL.createObjectURL(file) });
   };
 

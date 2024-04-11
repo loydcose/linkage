@@ -83,31 +83,34 @@ export async function updateUser(data: any) {
   }
 }
 
-export async function imageUpload(image: Image) {
-  const { file, name, url } = image;
-  // upload to imgbb
-  // save imglink to db
+export async function uploadImage(base64: string, name: string) {
+  // upload to imgbb hosting
 
-  console.log({ file, name, url });
-  // try {
-  //   const data = new FormData();
-  //   data.append("image", file);
-  //   data.append(
-  //     "name",
-  //     `/linkage/profile-images/${name}-${new Date().getTime()}`
-  //   );
+  // remove name extenstion (eg. .png, .jpg)
+  name = name
+    .replace(/\.[^/.]+$/, "")
+    .replace(/\s/g, "-")
+    .toLowerCase();
 
-  //   const uploadToHosting = await fetch(
-  //     `https://api.imgbb.com/1/upload?key=${process.env.IMG_BB_KEY}`,
-  //     {
-  //       method: "POST",
-  //       body: data,
-  //     }
-  //   );
-  //   const uploadedImage = await uploadToHosting.json();
-  //   console.log(uploadedImage);
-  // } catch (error: any) {
-  //   console.error(error.message);
-  //   return null;
-  // }
+  try {
+    const data = new FormData();
+    data.append("image", base64);
+    data.append(
+      "name",
+      `/linkage/profile-images/${name}-${new Date().getTime()}`
+    );
+
+    const uploadToHosting = await fetch(
+      `https://api.imgbb.com/1/upload?key=${process.env.IMG_BB_KEY}`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    const uploadedImage = await uploadToHosting.json();
+    return uploadedImage.data.url;
+  } catch (error: any) {
+    console.error(error.message);
+    return null;
+  }
 }

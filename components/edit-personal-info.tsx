@@ -4,12 +4,13 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { User } from "@prisma/client";
-import { imageUpload, updateUser } from "@/actions";
+import { updateUser, uploadImage } from "@/actions";
 import { useToast } from "./ui/use-toast";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 import { useRouter } from "next/navigation";
 import ImageUpload from "./image-upload";
+import { convertToBase64 } from "@/lib/utils";
 
 type TEditPersonalInfo = {
   user: User;
@@ -34,6 +35,7 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
     name: "Image from auth",
     url: user.imageUrl,
   });
+  const [hasProfileChanged, setHasProfileChanged] = useState(false);
 
   const inputs = [
     {
@@ -56,44 +58,37 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
     },
   ];
 
-  // const processImage = async () => {
-  //   await imageUpload(image);
-
-  //   // router refresh
-  // };
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await imageUpload(image);
+    // get form data
+    let formData: any = new FormData(e.currentTarget);
+    formData = Object.fromEntries(formData.entries());
 
-    // // get form data
-    // let formData: any = new FormData(e.currentTarget);
-    // formData = Object.fromEntries(formData.entries());
-
-    // const hasProfileChanged =
-    //   image && !image?.url?.startsWith("https://img.clerk.com/");
-    // if (hasProfileChanged) {
-    //   await imageUpload(image);
-    // }
-
-    // setBtnDisabled(true);
-    // setIsLoading(true);
-    // const res = await updateUser(formData);
-    // if (res) {
-    //   toast({
-    //     title: "Profile information updated!",
-    //   });
-    //   router.refresh();
-    //   console.log({ res });
-    // } else {
-    //   toast({
-    //     title: "Something went wrong! Please try again.",
-    //     variant: "destructive",
-    //   });
-    // }
-    // setIsLoading(false);
-    // setBtnDisabled(false);
+    setIsLoading(true);
+    setBtnDisabled(true);
+    if (hasProfileChanged) {
+      const base64 = await convertToBase64(image.file as File);
+      var imgUrl = await uploadImage(base64, image.name);
+    }
+    const res = await updateUser({
+      ...formData,
+      imageUrl: hasProfileChanged ? imgUrl : user.imageUrl,
+    });
+    if (res) {
+      toast({
+        title: "Profile information updated!",
+      });
+      router.refresh();
+      console.log({ res });
+    } else {
+      toast({
+        title: "Something went wrong! Please try again.",
+        variant: "destructive",
+      });
+    }
+    setIsLoading(false);
+    setBtnDisabled(false);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +122,12 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
       onSubmit={handleSubmit}
       className="flex flex-col gap-4 pb-10 border-b border-b-stone-300"
     >
-      <ImageUpload user={user} image={image} setImage={setImage} />
+      <ImageUpload
+        user={user}
+        image={image}
+        setImage={setImage}
+        setHasProfileChanged={setHasProfileChanged}
+      />
       {inputs.map(({ name, placeholder, value, onChange }) => (
         <Input
           key={name}
