@@ -24,7 +24,7 @@ export default function TopRightBtn() {
           <Settings className="m-auto text-xs text-stone-500" />
         </Link>
       )}
-      {pathname === "/edit" && <ToggleActive isAdmin />}
+      {/* {pathname === "/edit" && <ToggleActive isAdmin />} */}
     </>
   );
 }
