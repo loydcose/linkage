@@ -43,6 +43,25 @@ if image === string -> render via src
 
 
 
+// update hook
+[
+    {
+        socialMedia: "Twitter"
+        url: "https://twitter.com/username"
+        name: ""
+        hasChanged: false,
+    }
+]
+
+// create hook
+[
+    {
+        socialMedia: "Discord"
+        url: "https://discord.com/username"
+        name: ""
+    }
+]
+
 
 
 

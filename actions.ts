@@ -2,7 +2,6 @@
 
 import { auth, currentUser } from "@clerk/nextjs";
 import db from "./lib/db";
-import type { Image } from "./components/edit-personal-info";
 
 // todo: use auth() to get user's clerk id instead of getUser()
 

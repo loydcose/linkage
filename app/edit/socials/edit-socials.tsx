@@ -1,9 +1,9 @@
 "use client";
 
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 import { Social } from "@prisma/client";
 import { useState } from "react";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
 
 type TEditSocials = {
   socials: Social[];

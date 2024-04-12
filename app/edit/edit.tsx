@@ -1,15 +1,11 @@
 "use client";
 
-import EditPersonalInfo from "@/components/edit-personal-info";
-import EditSocials from "@/components/edit-socials";
-import ImageUpload from "@/components/image-upload";
-import ToggleActive from "@/components/toggle-active";
+import EditSocials from "@/app/edit/socials/edit-socials";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Social, User } from "@prisma/client";
-import { Plus, X } from "lucide-react";
 import Link from "next/link";
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { FormEvent } from "react";
+import EditPersonalInfo from "./personal-info/edit-personal-info";
 
 type TEdit = {
   user: User;
