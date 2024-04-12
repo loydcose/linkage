@@ -73,6 +73,9 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
           name={name}
           value={value || ""}
           onChange={onChange}
+          maxLength={64}
+          minLength={1}
+          required
         />
       ))}
       <div className="flex items-center gap-2">

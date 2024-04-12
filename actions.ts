@@ -2,6 +2,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs";
 import db from "./lib/db";
+import { ReadableError } from "./lib/erros";
 
 // todo: use auth() to get user's clerk id instead of getUser()
 
@@ -108,6 +109,54 @@ export async function uploadImage(base64: string, name: string) {
     );
     const uploadedImage = await uploadToHosting.json();
     return uploadedImage.data.url;
+  } catch (error: any) {
+    console.error(error.message);
+    return null;
+  }
+}
+
+// todo: use updateMany instead of update
+export async function updateSocial(data: any, id: string) {
+  const { userId: clerkId } = auth();
+
+  if (!clerkId) throw new ReadableError("User is not authenticated");
+  if (!data) throw new ReadableError("Missing `socials` param");
+
+  // todo: should we base on userId or clerkId?
+  try {
+    const social = await db.social.update({
+      where: {
+        id,
+      },
+      data,
+    });
+    return social;
+  } catch (error: any) {
+    console.error(error.message);
+    return null;
+    // if (error instanceof ReadableError) {
+    //   return { error: error.message };
+    // } else {
+    //   console.error(error.message);
+    //   return { error: "Server error" };
+    // }
+  }
+}
+
+export async function createSocial(data: any) {
+  const user = await getUser();
+
+  if (!user) throw new ReadableError("User is not authenticated");
+  if (!data) throw new ReadableError("Data param is required");
+
+  try {
+    const social = await db.social.create({
+      data: {
+        ...data,
+        userId: user.id,
+      },
+    });
+    return social;
   } catch (error: any) {
     console.error(error.message);
     return null;

@@ -1,83 +1,95 @@
 "use client";
 
-import { Social } from "@prisma/client";
-import { useState } from "react";
-import { Button } from "../../../components/ui/button";
-import { Input } from "../../../components/ui/input";
+import { createSocial, updateSocial } from "@/actions";
+import { useToast } from "@/components/ui/use-toast";
+import type { Social as SocialType } from "@prisma/client";
+import { FormEvent, useState } from "react";
+import NewSocials from "./new-socials";
+import SubmitBtn from "./submit-btn";
+import UpdateSocial from "./update-social";
 
 type TEditSocials = {
-  socials: Social[];
+  socials: SocialType[];
 };
 
+export type CreateFields = {
+  name: string;
+  link: string;
+  socialMedia: string;
+};
+
+export type UpdateFields = SocialType & { hasChanged: boolean };
+
 export default function EditSocials({ socials }: TEditSocials) {
-  const [socialFields, setSocialFields] = useState<Social[] | any[]>(socials);
+  const [updateFields, setUpdateFields] = useState<UpdateFields[]>(
+    socials.map((social) => ({ ...social, hasChanged: false }))
+  );
+  const [createFields, setCreateFields] = useState<CreateFields[]>([]);
+  const [hasChanged, setHasChanged] = useState(false);
 
-  const addSocialField = () => {
-    setSocialFields((prev) => [
-      ...prev,
-      {
-        id: new Date().getTime().toString(),
-        socialMedia: "",
-        name: "",
-        link: "",
-      },
-    ]);
-  };
+  const { toast } = useToast();
 
-  const handleInputChange = (index: number, field: string, value: string) => {
-    setSocialFields((prev) =>
-      prev.map((item, i) => {
-        if (i === index) {
-          return {
-            ...item,
-            [field]: value,
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const updatedSocials = updateFields.filter((social) => social.hasChanged);
+
+    // todo: handler error
+    if (updatedSocials.length !== 0) {
+      const updateRes = await Promise.all(
+        updatedSocials.map(({ id, name, link, socialMedia }) => {
+          const data = {
+            name,
+            link,
+            socialMedia,
           };
-        }
-        return item;
-      })
-    );
+          return updateSocial(data, id);
+        })
+      );
+      console.log({ updateRes });
+    }
+    if (createFields.length !== 0) {
+      console.log({ createFields });
+      const createRes = await Promise.all(
+        createFields.map((social) => {
+          return createSocial(social);
+        })
+      );
+      console.log({ createRes });
+    }
+
+    toast({
+      title: "Socials updated!",
+    });
+    setHasChanged(false);
   };
 
   return (
-    <div className="py-10 border-b border-b-stone-300">
-      <h2 className="font-bold mb-2">Social medias</h2>
-      {socialFields &&
-        socialFields.map((social, index) => (
-          <div className="mb-8" key={social.id}>
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <Input
-                placeholder="Enter social media"
-                value={socialFields[index].socialMedia}
-                onChange={(e) =>
-                  handleInputChange(index, "socialMedia", e.target.value)
-                }
-                required
-              />
-              <Input
-                placeholder="Enter display name"
-                value={socialFields[index].name}
-                onChange={(e) =>
-                  handleInputChange(index, "name", e.target.value)
-                }
-                required
-              />
-            </div>
-            <Input
-              placeholder="Enter your link"
-              value={socialFields[index].link}
-              onChange={(e) => handleInputChange(index, "link", e.target.value)}
-              required
-            />
-          </div>
+    <form onSubmit={handleSubmit}>
+      <div className="py-10 border-b border-b-stone-300">
+        <h2 className="font-bold mb-2">Social medias</h2>
+        {updateFields.map((social, index) => (
+          <UpdateSocial
+            key={social.id}
+            social={social}
+            index={index}
+            updateFields={updateFields}
+            setUpdateFields={setUpdateFields}
+            setHasChanged={setHasChanged}
+          />
         ))}
-      <Button
-        className="mt-6 w-full"
-        onClick={addSocialField}
-        variant={"secondary"}
-        size={"sm"}
-      >
-        Add new
-      </Button>
-    </div>
+        <NewSocials
+          createFields={createFields}
+          setCreateFields={setCreateFields}
+          setHasChanged={setHasChanged}
+        />
+      </div>
+
+      {/* clean this button */}
+      <SubmitBtn
+        hasChanged={hasChanged}
+        updateFields={updateFields}
+        createFields={createFields}
+      />
+    </form>
   );
 }

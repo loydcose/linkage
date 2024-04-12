@@ -4,6 +4,10 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// run following commands after changing this file:
+// npx prisma generate
+// npx prisma db push
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -32,10 +36,9 @@ model User {
 }
 
 
-model Social {
-  id String @default(uuid()) 
+model Social {`
+  id String @unique @default(uuid()) 
   name String
-  slug String @unique
   link String
   socialMedia String
 
