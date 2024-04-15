@@ -50,5 +50,14 @@ model Social {`
 }
 
 
+// were getting media icons to brandfetch.com
+model SocialMedia {
+  id String @unique @default(uuid()) 
+  name String @unique
+  icon String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 
