@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import TopNav from "@/components/top-nav";
 import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 
 const font = Quicksand({ subsets: ["latin"] });
 
@@ -20,11 +21,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={font.className}>
+        <body className={cn(font.className, "flex flex-col")}>
           {/* Shadcnui's toaster */}
           <Toaster />
           <TopNav />
-          <main className="w-[90%] mx-auto max-w-xl pb-8">{children}</main>
+          <main className="w-[90%] mx-auto max-w-xl pb-8 grow">{children}</main>
         </body>
       </html>
     </ClerkProvider>

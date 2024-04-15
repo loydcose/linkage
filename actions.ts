@@ -23,6 +23,25 @@ export async function getUser() {
   }
 }
 
+
+export async function getUserByUsername(username: string) {
+
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        username: username,
+      },
+      include: {
+        socials: true,
+      }
+    });
+    return user;
+  } catch (error: any) {
+    console.error(error.message);
+    return null;
+  }
+}
+
 export async function createUser() {
   const authUser = await currentUser();
   if (!authUser) return null;
