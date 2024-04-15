@@ -35,7 +35,7 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-
+// todo connect social and social media 
 model Social {`
   id String @unique @default(uuid()) 
   name String
