@@ -26,6 +26,7 @@ export default function ImageUpload({
 }: TImageUpload) {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
+  console.log("ey");
   const clickImageUpload = () => {
     if (inputFileRef?.current) {
       inputFileRef.current?.click();
