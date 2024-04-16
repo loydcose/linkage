@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 // run following commands after changing this file:
 // npx prisma generate
 // npx prisma db push
@@ -35,12 +29,13 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-// todo connect social and social media 
-model Social {`
+model Social {
   id String @unique @default(uuid()) 
-  name String
   link String
-  socialMedia String
+  name String
+  
+  socialMedia SocialMedia @relation(fields: [socialMediaId], references: [id], onDelete: Cascade)
+  socialMediaId String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -55,6 +50,8 @@ model SocialMedia {
   id String @unique @default(uuid()) 
   name String @unique
   icon String
+
+  socials Social[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
