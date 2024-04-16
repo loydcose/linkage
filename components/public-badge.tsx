@@ -9,7 +9,7 @@ export default function PublicBadge({ user }: { user: User }) {
 
   return (
     <Link
-      href={isActivated ? `/${username}` : "/settings"}
+      href={isActivated ? `/${username}` : "/edit"}
       className="w-fit block mx-auto"
     >
       <Badge

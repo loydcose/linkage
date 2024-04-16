@@ -21,13 +21,25 @@ import { useSocialMediasStore } from "@/stores/use-social-medias-store";
 import { CommandList } from "cmdk";
 import Image from "next/image";
 
-export function SocialMediaSelection() {
+type SocialMediaSelectionProps = {
+  value: string;
+  onChange: (e: any) => void;
+};
+
+export function SocialMediaSelection({
+  value,
+  onChange,
+}: SocialMediaSelectionProps) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
   const { socialMedias } = useSocialMediasStore();
+  const [selected, setSelected] = React.useState("");
   const selectedSocialMedia = socialMedias?.find(
     (media) => media.name === value
   );
+
+  React.useEffect(() => {
+    setSelected(socialMedias?.find((media) => media.id === value)?.name || "");
+  }, [value]);
 
   console.log(selectedSocialMedia);
 
@@ -40,7 +52,7 @@ export function SocialMediaSelection() {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value ? (
+          {selected ? (
             <DisplaySelected
               name={selectedSocialMedia?.name}
               icon={selectedSocialMedia?.icon}
@@ -65,7 +77,13 @@ export function SocialMediaSelection() {
                     key={id}
                     value={name}
                     onSelect={(item) => {
-                      setValue(item === name ? item : "");
+                      onChange({
+                        name: "socialMediaId",
+                        value: socialMedias?.find(
+                          (media) => media.name === item
+                        )?.id,
+                      });
+                      setSelected(item === name ? item : "");
                       setOpen(false);
                     }}
                   >

@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import type { CreateFields } from "./edit-socials";
+import { SocialMediaSelection } from "./social-media-selection";
 
 type TSocial = {
   social: CreateFields;
@@ -26,13 +27,16 @@ export default function NewSocial({
     );
   };
 
+  // todo: add other website
+
   return (
     <div className="mb-8">
       <div className="grid grid-cols-2 gap-2 mb-2">
+        <SocialMediaSelection value={""} onChange={handleInputChange} />
         <Input
           name="socialMedia"
           placeholder="Enter social media"
-          value={social.socialMedia}
+          value={""}
           onChange={handleInputChange}
           required
           maxLength={64}

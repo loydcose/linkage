@@ -32,7 +32,7 @@ export default async function Home() {
         <div className="flex flex-col gap-2 text-center border border-gray-200 rounded-xl p-4 mx-auto md:w-[75%]">
           <p>No social media found.</p>
           <Link
-            href="/settings"
+            href="/edit"
             className={cn(buttonVariants({ variant: "default", size: "sm" }))}
           >
             Start creating one

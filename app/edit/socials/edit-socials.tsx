@@ -2,14 +2,14 @@
 
 import { createSocial, updateSocial } from "@/actions";
 import { useToast } from "@/components/ui/use-toast";
-import type { Social as SocialType } from "@prisma/client";
+import type { SocialMedia, Social as SocialType } from "@prisma/client";
 import { FormEvent, useState } from "react";
 import NewSocials from "./new-socials";
 import SubmitBtn from "./submit-btn";
 import UpdateSocial from "./update-social";
 
 type TEditSocials = {
-  socials: SocialType[];
+  socials: (SocialType & SocialMedia)[];
 };
 
 export type CreateFields = {
@@ -36,11 +36,11 @@ export default function EditSocials({ socials }: TEditSocials) {
     // todo: handler error
     if (updatedSocials.length !== 0) {
       const updateRes = await Promise.all(
-        updatedSocials.map(({ id, name, link, socialMedia }) => {
+        updatedSocials.map(({ id, name, link, socialMediaId }) => {
           const data = {
             name,
             link,
-            socialMedia,
+            socialMediaId,
           };
           return updateSocial(data, id);
         })
