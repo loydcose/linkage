@@ -29,6 +29,8 @@ export default function NewSocial({
 
   // todo: add other website
 
+  // KAINIS AMPOTAH, NAWALA UNG BUONG DATA KO SA DATABASE TAPOS AYAW PA GUMANA NG AUTH + DB-CREATE HAYSS...
+
   return (
     <div className="mb-8">
       <div className="grid grid-cols-2 gap-2 mb-2">
