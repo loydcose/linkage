@@ -1,16 +1,19 @@
-"use client"
+"use client";
 
-import { useSocialMediasStore } from "@/stores/use-social-medias-store"
-import { useEffect } from "react"
+import { useSocialMediasStore } from "@/stores/use-social-medias-store";
+import { SocialMedia } from "@prisma/client";
+import { useEffect } from "react";
 
 type SetStoreStateProps = {
-  state: any
-}
+  state: SocialMedia[];
+};
 
 export function SetStoreState({ state }: SetStoreStateProps) {
-  useEffect(() => {
-    useSocialMediasStore.setState(state)
-  }, [state])
+  const { setSocialMedias } = useSocialMediasStore();
 
-  return <></>
+  useEffect(() => {
+    setSocialMedias(state);
+  }, [state]);
+
+  return <></>;
 }

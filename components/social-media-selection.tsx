@@ -1,54 +1,35 @@
-"use client"
+"use client";
 
-import { Check, ChevronsUpDown } from "lucide-react"
-import * as React from "react"
+import { Check, ChevronsUpDown } from "lucide-react";
+import * as React from "react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import { CommandList } from "cmdk"
-import { useSocialMediasStore } from "@/stores/use-social-medias-store"
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { useSocialMediasStore } from "@/stores/use-social-medias-store";
+import { CommandList } from "cmdk";
+import Image from "next/image";
 
 export function SocialMediaSelection() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
-  const {socialMedias} = useSocialMediasStore()
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
+  const { socialMedias } = useSocialMediasStore();
+  const selectedSocialMedia = socialMedias?.find(
+    (media) => media.name === value
+  );
 
-  console.log(socialMedias)
-
-  const frameworks = [
-    {
-      value: "next.js",
-      label: "Next.js",
-    },
-    {
-      value: "sveltekit",
-      label: "SvelteKit",
-    },
-    {
-      value: "nuxt.js",
-      label: "Nuxt.js",
-    },
-    {
-      value: "remix",
-      label: "Remix",
-    },
-    {
-      value: "astro",
-      label: "Astro",
-    },
-  ]
+  console.log(selectedSocialMedia);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -59,9 +40,14 @@ export function SocialMediaSelection() {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value
-            ? frameworks?.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
+          {value ? (
+            <DisplaySelected
+              name={selectedSocialMedia?.name}
+              icon={selectedSocialMedia?.icon}
+            />
+          ) : (
+            "Select social media..."
+          )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -71,28 +57,49 @@ export function SocialMediaSelection() {
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
             <CommandList>
-              {frameworks?.map((framework) => (
-                <CommandItem
-                  key={framework.value}
-                  value={framework.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {framework.label}
-                </CommandItem>
-              ))}
+              {socialMedias?.map((media) => {
+                const { id, name, icon } = media;
+
+                return (
+                  <CommandItem
+                    key={id}
+                    value={name}
+                    onSelect={(item) => {
+                      setValue(item === name ? item : "");
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === name ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    <DisplaySelected name={name} icon={icon} />
+                  </CommandItem>
+                );
+              })}
             </CommandList>
           </CommandGroup>
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
+}
+
+function DisplaySelected({
+  name,
+  icon,
+}: {
+  name: string | undefined;
+  icon: string | undefined;
+}) {
+  if (!name || !icon) return null;
+
+  return (
+    <span className="flex items-center gap-2">
+      <Image src={icon} alt={name + " Logo"} width={20} height={20} />
+      {name}
+    </span>
+  );
 }
