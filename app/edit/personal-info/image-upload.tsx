@@ -1,14 +1,8 @@
 "use client";
 
 import { User } from "@prisma/client";
-import { Plus, X } from "lucide-react";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useRef,
-  useState,
-} from "react";
+import { Plus } from "lucide-react";
+import { ChangeEvent, Dispatch, SetStateAction, useRef } from "react";
 import type { Image } from "./edit-personal-info";
 
 type TImageUpload = {
@@ -26,7 +20,6 @@ export default function ImageUpload({
 }: TImageUpload) {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  console.log("ey");
   const clickImageUpload = () => {
     if (inputFileRef?.current) {
       inputFileRef.current?.click();
