@@ -1,7 +1,8 @@
 import { SocialMediaSelection } from "@/app/edit/socials/social-media-selection";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import type { Social as SocialType } from "@prisma/client";
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { UpdateFields } from "./edit-socials";
 
 type TSocial = {
@@ -19,8 +20,15 @@ export default function UpdateSocial({
   setUpdateFields,
   setHasChanged,
 }: TSocial) {
+  // temporary intial set:  shouldnt be like this
+  const [isCustomNameHidden, setIsCustomNameHidden] = useState(
+    social.id !== "15da9e1d-b3d9-43fc-aea5-5f418041ac2b"
+  );
+
+  // todo: handle the customname submission properly
   const handleInputChange = (e: ChangeEvent<HTMLInputElement> | any) => {
     const { name, value } = e.target;
+    setIsCustomNameHidden(name !== "customName");
 
     console.log({ name, value });
 
@@ -35,6 +43,8 @@ export default function UpdateSocial({
     );
   };
 
+  console.log({ isCustomNameHidden });
+
   return (
     <div className="mb-8">
       <div className="flex gap-2 mb-2">
@@ -42,15 +52,16 @@ export default function UpdateSocial({
           value={social.socialMediaId}
           onChange={handleInputChange}
         />
-        {/* <Input
-          name="socialMedia"
-          placeholder="Enter social media"
-          value={social.socialMediaId}
+        <Input
+          name="customName"
+          placeholder="Please specify social media"
+          // value={social.socialMediaId}
           onChange={handleInputChange}
           required
           maxLength={64}
           minLength={1}
-        /> */}
+          className={cn(isCustomNameHidden ? "hidden" : "")}
+        />
       </div>
       <div className="grid grid-cols-2 gap-2 mb-2">
         <Input
