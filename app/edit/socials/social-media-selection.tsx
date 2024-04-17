@@ -34,14 +34,12 @@ export function SocialMediaSelection({
   const { socialMedias } = useSocialMediasStore();
   const [selected, setSelected] = React.useState("");
   const selectedSocialMedia = socialMedias?.find(
-    (media) => media.name === value
+    (media) => media.name === selected
   );
 
   React.useEffect(() => {
     setSelected(socialMedias?.find((media) => media.id === value)?.name || "");
-  }, [value]);
-
-  console.log(selectedSocialMedia);
+  }, [value, socialMedias]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -78,10 +76,12 @@ export function SocialMediaSelection({
                     value={name}
                     onSelect={(item) => {
                       onChange({
-                        name: "socialMediaId",
-                        value: socialMedias?.find(
-                          (media) => media.name === item
-                        )?.id,
+                        target: {
+                          name: "socialMediaId",
+                          value: socialMedias?.find(
+                            (media) => media.name === item
+                          )?.id,
+                        },
                       });
                       setSelected(item === name ? item : "");
                       setOpen(false);

@@ -6,7 +6,7 @@ import EditPersonalInfo from "./personal-info/edit-personal-info";
 
 type TEdit = {
   user: User;
-  socials: (Social & SocialMedia)[];
+  socials: Social[];
 };
 
 export default function Edit({ user, socials }: TEdit) {

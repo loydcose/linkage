@@ -42,7 +42,7 @@ export default function UpdateSocial({
           value={social.socialMediaId}
           onChange={handleInputChange}
         />
-        <Input
+        {/* <Input
           name="socialMedia"
           placeholder="Enter social media"
           value={social.socialMediaId}
@@ -50,7 +50,7 @@ export default function UpdateSocial({
           required
           maxLength={64}
           minLength={1}
-        />
+        /> */}
       </div>
       <div className="grid grid-cols-2 gap-2 mb-2">
         <Input

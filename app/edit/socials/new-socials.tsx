@@ -21,7 +21,6 @@ export default function NewSocials({
       {
         name: "",
         link: "",
-        socialMedia: "",
       },
     ]);
   };

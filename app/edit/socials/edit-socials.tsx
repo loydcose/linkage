@@ -2,20 +2,19 @@
 
 import { createSocial, updateSocial } from "@/actions";
 import { useToast } from "@/components/ui/use-toast";
-import type { SocialMedia, Social as SocialType } from "@prisma/client";
+import type { Social, Social as SocialType } from "@prisma/client";
 import { FormEvent, useState } from "react";
 import NewSocials from "./new-socials";
 import SubmitBtn from "./submit-btn";
 import UpdateSocial from "./update-social";
 
 type TEditSocials = {
-  socials: (SocialType & SocialMedia)[];
+  socials: Social[];
 };
 
 export type CreateFields = {
   name: string;
   link: string;
-  socialMedia: string;
 };
 
 export type UpdateFields = SocialType & { hasChanged: boolean };
@@ -32,6 +31,8 @@ export default function EditSocials({ socials }: TEditSocials) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const updatedSocials = updateFields.filter((social) => social.hasChanged);
+
+    console.log({ updatedSocials, createFields });
 
     // todo: handler error
     if (updatedSocials.length !== 0) {

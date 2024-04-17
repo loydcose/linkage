@@ -18,6 +18,7 @@ export default function NewSocial({
 }: TSocial) {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     const newField = {
       ...social,
       [name]: value,
@@ -29,13 +30,11 @@ export default function NewSocial({
 
   // todo: add other website
 
-  // KAINIS AMPOTAH, NAWALA UNG BUONG DATA KO SA DATABASE TAPOS AYAW PA GUMANA NG AUTH + DB-CREATE HAYSS...
-
   return (
     <div className="mb-8">
       <div className="grid grid-cols-2 gap-2 mb-2">
         <SocialMediaSelection value={""} onChange={handleInputChange} />
-        <Input
+        {/* <Input
           name="socialMedia"
           placeholder="Enter social media"
           value={""}
@@ -43,7 +42,7 @@ export default function NewSocial({
           required
           maxLength={64}
           minLength={1}
-        />
+        /> */}
         <Input
           name="name"
           placeholder="Enter display name"
