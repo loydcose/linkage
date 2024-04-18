@@ -33,6 +33,7 @@ model Social {
   id String @unique @default(uuid()) 
   link String
   name String
+  customName String?
   
   socialMedia SocialMedia @relation(fields: [socialMediaId], references: [id], onDelete: Cascade)
   socialMediaId String

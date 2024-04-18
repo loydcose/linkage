@@ -24,11 +24,13 @@ import Image from "next/image";
 type SocialMediaSelectionProps = {
   value: string;
   onChange: (e: any) => void;
+  setIsCustomNameHidden: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export function SocialMediaSelection({
   value,
   onChange,
+  setIsCustomNameHidden,
 }: SocialMediaSelectionProps) {
   const [open, setOpen] = React.useState(false);
   const { socialMedias } = useSocialMediasStore();
@@ -75,11 +77,12 @@ export function SocialMediaSelection({
                     key={id}
                     value={name}
                     onSelect={(item) => {
-                      const isCustom = item === "Other";
+                      const isCustomSelected = item === "Other";
+                      setIsCustomNameHidden(!isCustomSelected);
 
                       onChange({
                         target: {
-                          name: isCustom ? "customName" : "socialMediaId",
+                          name: "socialMediaId",
                           value: socialMedias?.find(
                             (media) => media.name === item
                           )?.id,

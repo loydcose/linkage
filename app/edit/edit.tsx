@@ -1,7 +1,5 @@
-"use client";
-
 import EditSocials from "@/app/edit/socials/edit-socials";
-import { Social, SocialMedia, User } from "@prisma/client";
+import { Social, User } from "@prisma/client";
 import EditPersonalInfo from "./personal-info/edit-personal-info";
 
 type TEdit = {
