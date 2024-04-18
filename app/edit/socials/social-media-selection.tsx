@@ -107,7 +107,7 @@ export function SocialMediaSelection({
   );
 }
 
-function DisplaySelected({
+export function DisplaySelected({
   name,
   icon,
 }: {

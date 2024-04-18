@@ -20,7 +20,7 @@ export default function UpdateSocial({
   setUpdateFields,
   setHasChanged,
 }: TSocial) {
-  // temporary intial set:  shouldnt be like this
+  // temporary intial set:  id of 'other' item
   const [isCustomNameHidden, setIsCustomNameHidden] = useState(
     social.id !== "15da9e1d-b3d9-43fc-aea5-5f418041ac2b"
   );

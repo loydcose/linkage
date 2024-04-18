@@ -1,8 +1,13 @@
+import { DisplaySelected } from "@/app/edit/socials/social-media-selection";
 import { buttonVariants } from "@/components/ui/button";
-import { Social } from "@prisma/client";
+import { Social, SocialMedia } from "@prisma/client";
 import Link from "next/link";
 
-export default function SocialLinks({ socials }: { socials: Social[] }) {
+type SocialLinks = {
+  socials: (Social & { socialMedia: SocialMedia })[];
+};
+
+export default function SocialLinks({ socials }: SocialLinks) {
   return (
     <div className="flex flex-col gap-2">
       {socials.map(({ id, name, link, socialMedia }) => (
@@ -11,7 +16,7 @@ export default function SocialLinks({ socials }: { socials: Social[] }) {
           href={link}
           className={buttonVariants({ variant: "outline" })}
         >
-          {socialMedia}: {name}
+          <DisplaySelected name={name} icon={socialMedia.icon} />
         </Link>
       ))}
     </div>
