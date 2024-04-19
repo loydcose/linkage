@@ -1,4 +1,4 @@
-import { getUserByUsername, getUserSocials } from "@/actions";
+import { getUserByUsername, getUserSocialsByUsername } from "@/actions";
 import ProfileImage from "@/components/profile-image";
 import ProfileInfo from "@/components/profile-info";
 import SocialLinks from "@/components/social-links";
@@ -12,7 +12,7 @@ export default async function Home({
   params: { username: string };
 }) {
   const user = await getUserByUsername(username);
-  const socials = await getUserSocials();
+  const socials = await getUserSocialsByUsername(username);
 
   if (!user || !user.isActivated) {
     notFound();

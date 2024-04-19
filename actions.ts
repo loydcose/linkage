@@ -83,6 +83,26 @@ export async function getUserSocials() {
   }
 }
 
+export async function getUserSocialsByUsername(username: string) {
+  const user = await getUserByUsername(username);
+  if (!user) return null;
+
+  try {
+    const socials = await db.social.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        socialMedia: true,
+      },
+    });
+    return socials;
+  } catch (error: any) {
+    console.error(error.message);
+    return null;
+  }
+}
+
 export async function updateUser(data: any) {
   const { userId: clerkId } = auth();
 
