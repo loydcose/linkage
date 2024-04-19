@@ -66,16 +66,16 @@ export function useEditPersonalInfo({ user }: TEditPersonalInfo) {
         title: res.error,
         variant: "destructive",
       });
-
-      // native reload to hard refresh
     } else {
       toast({
         title: "Profile information updated!",
       });
-      location.reload();
+      // native reload to hard refresh
+      // location.reload();
+      router.refresh();
     }
     setIsLoading(false);
-    setBtnDisabled(false);
+    setBtnDisabled(true);
   };
 
   useEffect(() => {
