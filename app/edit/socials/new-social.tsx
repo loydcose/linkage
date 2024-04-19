@@ -22,10 +22,6 @@ export default function NewSocial({
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    console.log({ name, value });
-
-    // setIsCustomNameHidden(name !== "customName");
-
     const newField = {
       ...social,
       [name]: value,

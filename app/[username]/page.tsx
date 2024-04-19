@@ -14,7 +14,7 @@ export default async function Home({
   const user = await getUserByUsername(username);
   const socials = await getUserSocials();
 
-  if (!user) {
+  if (!user || !user.isActivated) {
     notFound();
   }
 

@@ -68,7 +68,6 @@ export function useEditPersonalInfo({ user }: TEditPersonalInfo) {
 
       // native reload to hard refresh
       location.reload();
-      console.log({ res });
     } else {
       toast({
         title: "Something went wrong! Please try again.",

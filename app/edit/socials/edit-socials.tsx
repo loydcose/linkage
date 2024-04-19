@@ -3,6 +3,7 @@
 import { createSocial, updateSocial } from "@/actions";
 import { useToast } from "@/components/ui/use-toast";
 import type { Social, Social as SocialType } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import NewSocials from "./new-socials";
 import SubmitBtn from "./submit-btn";
@@ -26,13 +27,12 @@ export default function EditSocials({ socials }: TEditSocials) {
   const [createFields, setCreateFields] = useState<CreateFields[]>([]);
   const [hasChanged, setHasChanged] = useState(false);
 
+  const router = useRouter();
   const { toast } = useToast();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const updatedSocials = updateFields.filter((social) => social.hasChanged);
-
-    console.log({ updatedSocials, createFields });
 
     // todo: handler error
     if (updatedSocials.length !== 0) {
@@ -46,22 +46,20 @@ export default function EditSocials({ socials }: TEditSocials) {
           return updateSocial(data, id);
         })
       );
-      console.log({ updateRes });
     }
     if (createFields.length !== 0) {
-      console.log({ createFields });
       const createRes = await Promise.all(
         createFields.map((social) => {
           return createSocial(social);
         })
       );
-      console.log({ createRes });
     }
 
     toast({
       title: "Socials updated!",
     });
     setHasChanged(false);
+    router.refresh();
   };
 
   return (

@@ -9,7 +9,7 @@ type SocialLinks = {
 
 export default function SocialLinks({ socials }: SocialLinks) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 mb-16">
       {socials.map(({ id, name, link, socialMedia }) => (
         <Link
           key={id}

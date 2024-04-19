@@ -8,8 +8,6 @@ export default async function page() {
   const userSocials = await getUserSocials();
   const socialMedias = await getAllSocialMedias();
 
-  // console.log({ userSocials });
-
   if (!user || !userSocials) {
     redirect("/");
   }

@@ -39,8 +39,6 @@ export default function UpdateSocial({
     );
   };
 
-  console.log({ isCustomNameHidden });
-
   return (
     <div className="mb-8">
       <div className="flex gap-2 mb-2">
