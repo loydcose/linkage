@@ -116,10 +116,13 @@ export async function updateUser(data: any) {
       },
       data,
     });
-    return user;
+    return { data: user };
   } catch (error: any) {
-    console.error(error.message);
-    return null;
+    if (error.code === "P2002") {
+      return { error: "Username already exists" };
+    }
+    console.error({ error: error.message });
+    return { error: "Server error" };
   }
 }
 

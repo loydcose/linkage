@@ -37,21 +37,31 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
   const inputs = [
     {
       name: "name",
-      value: name,
+      value: name || "",
       placeholder: "Enter your name",
       onChange: (e: ChangeEvent<HTMLInputElement>) => handleInputChange(e),
+      required: true,
+      maxLength: 64,
+      minLength: 1,
     },
     {
       name: "username",
-      value: username,
+      value: username || "",
+      pattern: "^[a-zA-Z0-9_]{1,32}$",
       placeholder: "Enter your username",
       onChange: (e: ChangeEvent<HTMLInputElement>) => handleInputChange(e),
+      required: true,
+      maxLength: 32,
+      minLength: 1,
+      title:
+        "Username must be 1-32 characters long, alphanumeric, and can include underscores.",
     },
     {
       name: "bio",
-      value: bio,
+      value: bio || "",
       placeholder: "Enter your bio",
       onChange: (e: ChangeEvent<HTMLInputElement>) => handleInputChange(e),
+      maxLength: 128,
     },
   ];
 
@@ -66,17 +76,8 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
         setImage={setImage}
         setHasProfileChanged={setHasProfileChanged}
       />
-      {inputs.map(({ name, placeholder, value, onChange }) => (
-        <Input
-          key={name}
-          placeholder={placeholder}
-          name={name}
-          value={value || ""}
-          onChange={onChange}
-          maxLength={64}
-          minLength={1}
-          required
-        />
+      {inputs.map((inputProps) => (
+        <Input key={inputProps.name} {...inputProps} />
       ))}
       <div className="flex items-center gap-2">
         <Switch

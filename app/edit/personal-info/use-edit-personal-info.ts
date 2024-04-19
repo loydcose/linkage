@@ -1,9 +1,9 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { User } from "@prisma/client";
 import { updateUser, uploadImage } from "@/actions";
 import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 import { convertToBase64 } from "@/lib/utils";
+import { User } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 export type Image = {
   file: File | null;
@@ -61,18 +61,18 @@ export function useEditPersonalInfo({ user }: TEditPersonalInfo) {
       imageUrl: hasProfileChanged ? imgUrl : user.imageUrl,
       isActivated: hasSetToPublic,
     });
-    if (res) {
+    if (res.error) {
       toast({
-        title: "Profile information updated!",
+        title: res.error,
+        variant: "destructive",
       });
 
       // native reload to hard refresh
-      location.reload();
     } else {
       toast({
-        title: "Something went wrong! Please try again.",
-        variant: "destructive",
+        title: "Profile information updated!",
       });
+      location.reload();
     }
     setIsLoading(false);
     setBtnDisabled(false);
