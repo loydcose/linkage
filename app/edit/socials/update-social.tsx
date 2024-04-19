@@ -1,4 +1,5 @@
 import { SocialMediaSelection } from "@/app/edit/socials/social-media-selection";
+import { DeleteConfirmationDialog } from "@/components/delete-confirmation-dialog";
 import { Input } from "@/components/ui/input";
 import type { Social as SocialType } from "@prisma/client";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
@@ -80,6 +81,10 @@ export default function UpdateSocial({
           minLength={1}
         />
       </div>
+      <DeleteConfirmationDialog
+        socialId={social.id}
+        title={`Delete your ${social.name}?`}
+      />
     </div>
   );
 }

@@ -215,3 +215,17 @@ export async function getAllSocialMedias() {
     return null;
   }
 }
+
+export async function deleteSocial(socialId: string) {
+  try {
+    const res = await db.social.delete({
+      where: {
+        id: socialId,
+      },
+    });
+    return { data: res };
+  } catch (error: any) {
+    console.error(error.message);
+    return { error: "Server error, please try again." };
+  }
+}

@@ -3,6 +3,13 @@
 
 
 
+todos:
+
+[] - delete for socials link
+[] - handle 2 same emails on auth
+
+
+
 user
 socials
 
