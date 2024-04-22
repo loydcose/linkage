@@ -3,6 +3,10 @@ import { SetStoreState } from "@/components/set-store-state";
 import { redirect } from "next/navigation";
 import Edit from "./edit";
 
+export const metadata = {
+  title: "Settings",
+};
+
 export default async function page() {
   const user = await getUser();
   const userSocials = await getUserSocials();

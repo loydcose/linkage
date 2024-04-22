@@ -1,6 +1,7 @@
 "use server";
 
 import { auth, currentUser } from "@clerk/nextjs";
+import { revalidatePath } from "next/cache";
 import db from "./lib/db";
 import { ReadableError } from "./lib/erros";
 
@@ -17,6 +18,20 @@ export async function getUser() {
       },
     });
     return user;
+  } catch (error: any) {
+    console.error(error.message);
+    return null;
+  }
+}
+
+export async function getAllUsernames() {
+  try {
+    const usernames = await db.user.findMany({
+      select: {
+        username: true,
+      },
+    });
+    return usernames;
   } catch (error: any) {
     console.error(error.message);
     return null;
@@ -116,6 +131,11 @@ export async function updateUser(data: any) {
       },
       data,
     });
+
+    // @ts-ignore
+    const { username } = await getUser();
+    revalidatePath(`/${username}`);
+
     return { data: user };
   } catch (error: any) {
     if (error.code === "P2002") {
@@ -173,6 +193,11 @@ export async function updateSocial(data: any, id: string) {
       },
       data,
     });
+
+    // @ts-ignore
+    const { username } = await getUser();
+    revalidatePath(`/${username}`);
+
     return social;
   } catch (error: any) {
     console.error(error.message);
