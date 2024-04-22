@@ -66,10 +66,7 @@ export default function EditPersonalInfo({ user }: TEditPersonalInfo) {
   ];
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-4 pb-10 border-b border-b-stone-300"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <ImageUpload
         user={user}
         image={image}

@@ -64,8 +64,8 @@ export default function EditSocials({ socials }: TEditSocials) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="py-10 border-b border-b-stone-300">
-        <h2 className="font-bold mb-2">Social medias</h2>
+      <div className="pb-10 border-b border-b-stone-300">
+        {/* <h2 className="font-bold mb-2">Social medias</h2> */}
         {updateFields.map((social, index) => (
           <UpdateSocial
             key={social.id}
