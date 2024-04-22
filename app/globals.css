@@ -66,6 +66,10 @@
   }
 }
 
+html {
+  overflow-y: scroll;
+}
+
 @layer base {
   * {
     @apply border-border;
